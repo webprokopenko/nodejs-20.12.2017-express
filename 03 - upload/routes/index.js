@@ -24,14 +24,18 @@ router.post('/', (req, res, next) => {
     if (err) {
       return next(err);
     }
-    if (files.photo === void 0) {
+
+    if (files.photo.name === '' || files.photo.size === 0) {
       return res.redirect('/?msg=Не загружена картинка!');
     }
+
     if (!fields.name) {
       fs.unlink(files.photo.path);
       return res.redirect('/?msg=Не указано описание картинки!');
     }
+
     fileName = path.join(upload, files.photo.name);
+
     fs.rename(files.photo.path, fileName, function (err) {
       if (err) {
         console.error(err);
